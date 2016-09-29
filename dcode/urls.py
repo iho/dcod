@@ -16,6 +16,12 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 
+from countries import views
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+
+    url(r'^$', views.index),
+    url(r'^regions/$', views.regions),
+    url(r'^region/(?P<id>[0-9]+)/$', views.region),
 ]
