@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chart</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+    <script src="https://www.amcharts.com/lib/3/serial.js"></script>
+    <link rel="stylesheet" href="https://www.amcharts.com/lib/3/plugins/export/export.css" type="text/css" media="all" />
+    <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
+</head>
+<body>
+   <select id="regions">
+       <option selected></option>
+       {% for region in regions %}
+           <option value="{{ region.id }}">{{ region.name }}</option>
+       {% endfor %}
+   </select>
+   <div id="chartdiv"></div>	
+</body>
+
+<script>
+$(document).ready(function(){
+    $("#regions").change(function(){
+        var regionId = $("#regions option:selected").val();
+        if(regionId) {
+            $.get( "/region/" + regionId, onSuccess); 
+        }
+    })
+})
+var onSuccess = function(data){
+    chartConfig.dataProvider = data; 
+    var chart = AmCharts.makeChart( "chartdiv", chartConfig);
+};
+var chartConfig =  {
+  "type": "serial",
+  "theme": "light",
+  "dataProvider": null,
+  "valueAxes": [ {
+    "gridColor": "#FFFFFF",
+    "gridAlpha": 0.2,
+    "dashLength": 0
+  } ],
+  "gridAboveGraphs": true,
+  "startDuration": 1,
+  "graphs": [ {
+    "balloonText": "[[category]]: <b>[[value]]</b>",
+    "fillAlphas": 0.8,
+    "lineAlpha": 0.2,
+    "type": "column",
+    "valueField": "value"
+  } ],
+  "chartCursor": {
+    "categoryBalloonEnabled": false,
+    "cursorAlpha": 0,
+    "zoomable": false
+  },
+  "categoryField": "country",
+  "categoryAxis": {
+    "gridPosition": "start",
+    "gridAlpha": 0,
+    "tickPosition": "start",
+    "tickLength": 20
+  }
+};
+</script>
+<style>
+#chartdiv {
+	width		: 100%;
+	height		: 500px;
+	font-size	: 11px;
+}					
+</style>
+</html>
