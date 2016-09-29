@@ -13,6 +13,6 @@ def regions(request):
 
 
 def region(request, id):
-    return JsonResponse([{ 'country': country.name , 'value': country.value}
-        for country in get_list_or_404(Country,
-        region_id=id)], safe=False)
+    return JsonResponse([{'country': country.name, 'value': country.value}
+                         for country in get_list_or_404(Country,
+                                                        region_id=id)], safe=False)
